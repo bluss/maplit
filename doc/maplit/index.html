@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `maplit` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, maplit">
+
+    <title>maplit - 0.1.0 - maplit - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'maplit', ty: 'mod', relpath: '../'};</script>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>maplit</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/maplit/lib.rs.html#1-201' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>Macros for container literals with specific type.</p>
+<pre id='rust-example-rendered' class='rust '>
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>maplit</span>;
+
+<span class='kw'>let</span> <span class='ident'>foo</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>{
+    <span class='string'>&quot;a&quot;</span> <span class='op'>=&gt;</span> <span class='number'>1</span>,
+    <span class='string'>&quot;b&quot;</span> <span class='op'>=&gt;</span> <span class='number'>2</span>,
+};
+</pre>
+
+<p>The <strong>maplit</strong> crate uses <code>=&gt;</code> syntax for the mapping macros. It is
+not possible to use <code>:</code> as separator due to syntactic the restrictions in
+regular <code>macro_rules!</code> macros.</p>
+
+<p>Generic container macros already exist elsewhere, so those are not provided
+here at the moment.</p>
+</div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.btreemap!.html'
+                               title='maplit::btreemap!'>btreemap!</a></td>
+                        <td class='docblock short'>
+                             <p>Create a <strong>BTreeMap</strong> from a list of key-value pairs</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.btreeset!.html'
+                               title='maplit::btreeset!'>btreeset!</a></td>
+                        <td class='docblock short'>
+                             <p>Create a <strong>BTreeSet</strong> from a list of elements.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.hashmap!.html'
+                               title='maplit::hashmap!'>hashmap!</a></td>
+                        <td class='docblock short'>
+                             <p>Create a <strong>HashMap</strong> from a list of key-value pairs</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.hashset!.html'
+                               title='maplit::hashset!'>hashset!</a></td>
+                        <td class='docblock short'>
+                             <p>Create a <strong>HashSet</strong> from a list of elements.</p>
+
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+            <p>
+                Search functions by type signature (e.g.
+                <code>vec -> usize</code>)
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "maplit";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
