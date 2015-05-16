@@ -1,3 +1,4 @@
+#![warn(missing_docs)]
 
 #[macro_export]
 /// Create a **HashMap** from a list of key-value pairs
@@ -106,6 +107,7 @@ macro_rules! btreemap(
     };
 );
 
+#[macro_export]
 /// Create a **BTreeSet** from a list of elements.
 ///
 /// ## Example
@@ -121,7 +123,6 @@ macro_rules! btreemap(
 /// assert!(!foo.contains("c"));
 /// # }
 /// ```
-#[macro_export]
 macro_rules! btreeset(
     ($($key:expr,)+) => (btreeset!($($key),+));
     
