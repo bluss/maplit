@@ -1,5 +1,26 @@
 #![warn(missing_docs)]
 
+//! Macros for container literals with specific type.
+//! 
+//! ```
+//! #[macro_use]
+//! extern crate maplit;
+//!
+//! # fn main() {
+//! let foo = hashmap!{
+//!     "a" => 1,
+//!     "b" => 2,
+//! };
+//! # }
+//! ```
+//!
+//! The **maplit** crate uses `=>` syntax for the mapping macros. It is
+//! not possible to use `:` as separator due to syntactic the restrictions in
+//! regular `macro_rules!` macros.
+//!
+//! Generic container macros already exist elsewhere, so those are not provided
+//! here at the moment.
+
 #[macro_export]
 /// Create a **HashMap** from a list of key-value pairs
 ///
@@ -19,7 +40,7 @@
 /// assert_eq!(foo.get("c"), None);
 /// # }
 /// ```
-macro_rules! hashmap(
+macro_rules! hashmap {
     (__count) => (0);
     (__count $a:tt, $($rest:tt,)*) => (1 + hashmap!(__count $($rest,)*));
     
@@ -36,7 +57,7 @@ macro_rules! hashmap(
             _map
         }
     };
-);
+}
 
 /// Create a **HashSet** from a list of elements.
 ///
@@ -54,7 +75,7 @@ macro_rules! hashmap(
 /// # }
 /// ```
 #[macro_export]
-macro_rules! hashset(
+macro_rules! hashset {
     (__count) => (0);
     (__count $a:tt, $($rest:tt,)*) => (1 + hashset!(__count $($rest,)*));
     
@@ -71,7 +92,7 @@ macro_rules! hashset(
             _set
         }
     };
-);
+}
 
 #[macro_export]
 /// Create a **BTreeMap** from a list of key-value pairs
@@ -92,7 +113,7 @@ macro_rules! hashset(
 /// assert_eq!(foo.get("c"), None);
 /// # }
 /// ```
-macro_rules! btreemap(
+macro_rules! btreemap {
     // trailing comma case
     ($($key:expr => $value:expr,)+) => (btreemap!($($key => $value),+));
     
@@ -105,7 +126,7 @@ macro_rules! btreemap(
             _map
         }
     };
-);
+}
 
 #[macro_export]
 /// Create a **BTreeSet** from a list of elements.
@@ -123,7 +144,7 @@ macro_rules! btreemap(
 /// assert!(!foo.contains("c"));
 /// # }
 /// ```
-macro_rules! btreeset(
+macro_rules! btreeset {
     ($($key:expr,)+) => (btreeset!($($key),+));
     
     ( $($key:expr),* ) => {
@@ -135,7 +156,7 @@ macro_rules! btreeset(
             _set
         }
     };
-);
+}
 
 #[test]
 fn test_hashmap() {
