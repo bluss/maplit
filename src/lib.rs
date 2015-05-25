@@ -7,7 +7,7 @@
 //! extern crate maplit;
 //!
 //! # fn main() {
-//! let foo = hashmap!{
+//! let map = hashmap!{
 //!     "a" => 1,
 //!     "b" => 2,
 //! };
@@ -17,6 +17,11 @@
 //! The **maplit** crate uses `=>` syntax for the mapping macros. It is
 //! not possible to use `:` as separator due to syntactic the restrictions in
 //! regular `macro_rules!` macros.
+//!
+//! Note that rust macros are flexible in which brackets you use for the invocation.
+//! You can use them as `hashmap!{}` or `hashmap![]` or `hashmap!()`.
+//! This crate suggests `{}` as the convention for the map & set macros,
+//! it matches their `Debug` output.
 //!
 //! Generic container macros already exist elsewhere, so those are not provided
 //! here at the moment.
@@ -31,25 +36,25 @@
 /// extern crate maplit;
 /// # fn main() {
 ///
-/// let foo = hashmap!{
+/// let map = hashmap!{
 ///     "a" => 1,
 ///     "b" => 2,
 /// };
-/// assert_eq!(foo["a"], 1);
-/// assert_eq!(foo["b"], 2);
-/// assert_eq!(foo.get("c"), None);
+/// assert_eq!(map["a"], 1);
+/// assert_eq!(map["b"], 2);
+/// assert_eq!(map.get("c"), None);
 /// # }
 /// ```
 macro_rules! hashmap {
-    (__count) => (0);
-    (__count $a:tt, $($rest:tt,)*) => (1 + hashmap!(__count $($rest,)*));
+    (@count) => (0);
+    (@count $a:tt, $($rest:tt,)*) => (1 + hashmap!(@count $($rest,)*));
     
     // trailing comma case
     ($($key:expr => $value:expr,)+) => (hashmap!($($key => $value),+));
     
     ( $($key:expr => $value:expr),* ) => {
         {
-            let _cap = hashmap!(__count $($key,)*);
+            let _cap = hashmap!(@count $($key,)*);
             let mut _map = ::std::collections::HashMap::with_capacity(_cap);
             $(
                 _map.insert($key, $value);
@@ -68,23 +73,23 @@ macro_rules! hashmap {
 /// extern crate maplit;
 /// # fn main() {
 ///
-/// let foo = hashset!{"a", "b"};
-/// assert!(foo.contains("a"));
-/// assert!(foo.contains("b"));
-/// assert!(!foo.contains("c"));
+/// let set = hashset!{"a", "b"};
+/// assert!(set.contains("a"));
+/// assert!(set.contains("b"));
+/// assert!(!set.contains("c"));
 /// # }
 /// ```
 #[macro_export]
 macro_rules! hashset {
-    (__count) => (0);
-    (__count $a:tt, $($rest:tt,)*) => (1 + hashset!(__count $($rest,)*));
+    (@count) => (0);
+    (@count $a:tt, $($rest:tt,)*) => (1 + hashset!(@count $($rest,)*));
     
     // trailing comma case
     ($($key:expr,)+) => (hashset!($($key),+));
     
     ( $($key:expr),* ) => {
         {
-            let _cap = hashset!(__count $($key,)*);
+            let _cap = hashset!(@count $($key,)*);
             let mut _set = ::std::collections::HashSet::with_capacity(_cap);
             $(
                 _set.insert($key);
@@ -104,13 +109,13 @@ macro_rules! hashset {
 /// extern crate maplit;
 /// # fn main() {
 ///
-/// let foo = btreemap!{
+/// let map = btreemap!{
 ///     "a" => 1,
 ///     "b" => 2,
 /// };
-/// assert_eq!(foo["a"], 1);
-/// assert_eq!(foo["b"], 2);
-/// assert_eq!(foo.get("c"), None);
+/// assert_eq!(map["a"], 1);
+/// assert_eq!(map["b"], 2);
+/// assert_eq!(map.get("c"), None);
 /// # }
 /// ```
 macro_rules! btreemap {
@@ -138,10 +143,10 @@ macro_rules! btreemap {
 /// extern crate maplit;
 /// # fn main() {
 ///
-/// let foo = btreeset!{"a", "b"};
-/// assert!(foo.contains("a"));
-/// assert!(foo.contains("b"));
-/// assert!(!foo.contains("c"));
+/// let set = btreeset!{"a", "b"};
+/// assert!(set.contains("a"));
+/// assert!(set.contains("b"));
+/// assert!(!set.contains("c"));
 /// # }
 /// ```
 macro_rules! btreeset {

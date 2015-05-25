@@ -1,7 +1,7 @@
 maplit
 ======
 
-Extra iterator adaptors, functions and macros.
+Container / collection literal macros for HashMap, HashSet, BTreeMap, BTreeSet.
 
 Please read the `API documentation here`__
 
