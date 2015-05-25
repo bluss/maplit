@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `hashmap!` macro in crate `maplit`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, hashmap!">
 
-    <title>maplit - 0.1.0 - maplit::hashmap! - Rust</title>
+    <title>maplit - 0.1.1 - maplit::hashmap! - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -45,18 +45,18 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-4' class='srclink' href='../src/maplit/lib.rs.html#43-60' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-4' class='srclink' href='../src/maplit/lib.rs.html#48-65' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>hashmap</span> {
-    (<span class='ident'>__count</span>) <span class='op'>=&gt;</span> (<span class='number'>0</span>);
-    (<span class='ident'>__count</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>a</span>:<span class='ident'>tt</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>:<span class='ident'>tt</span>,)<span class='op'>*</span>) <span class='op'>=&gt;</span> (<span class='number'>1</span> <span class='op'>+</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='ident'>__count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>,)<span class='op'>*</span>));
+    (<span class='kw-2'>@</span><span class='ident'>count</span>) <span class='op'>=&gt;</span> (<span class='number'>0</span>);
+    (<span class='kw-2'>@</span><span class='ident'>count</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>a</span>:<span class='ident'>tt</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>:<span class='ident'>tt</span>,)<span class='op'>*</span>) <span class='op'>=&gt;</span> (<span class='number'>1</span> <span class='op'>+</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='kw-2'>@</span><span class='ident'>count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>,)<span class='op'>*</span>));
     
     <span class='comment'>// trailing comma case</span>
     ($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>:<span class='ident'>expr</span>,)<span class='op'>+</span>) <span class='op'>=&gt;</span> (<span class='macro'>hashmap</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>),<span class='op'>+</span>));
     
     ( $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>:<span class='ident'>expr</span>),<span class='op'>*</span> ) <span class='op'>=&gt;</span> {
         {
-            <span class='kw'>let</span> <span class='ident'>_cap</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='ident'>__count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>,)<span class='op'>*</span>);
+            <span class='kw'>let</span> <span class='ident'>_cap</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='kw-2'>@</span><span class='ident'>count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>,)<span class='op'>*</span>);
             <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>_map</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashMap</span>::<span class='ident'>with_capacity</span>(<span class='ident'>_cap</span>);
             $(
                 <span class='ident'>_map</span>.<span class='ident'>insert</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>);
@@ -73,13 +73,13 @@
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>maplit</span>;
 
-<span class='kw'>let</span> <span class='ident'>foo</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>{
+<span class='kw'>let</span> <span class='ident'>map</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>{
     <span class='string'>&quot;a&quot;</span> <span class='op'>=&gt;</span> <span class='number'>1</span>,
     <span class='string'>&quot;b&quot;</span> <span class='op'>=&gt;</span> <span class='number'>2</span>,
 };
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>foo</span>[<span class='string'>&quot;a&quot;</span>], <span class='number'>1</span>);
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>foo</span>[<span class='string'>&quot;b&quot;</span>], <span class='number'>2</span>);
-<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>foo</span>.<span class='ident'>get</span>(<span class='string'>&quot;c&quot;</span>), <span class='prelude-val'>None</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>map</span>[<span class='string'>&quot;a&quot;</span>], <span class='number'>1</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>map</span>[<span class='string'>&quot;b&quot;</span>], <span class='number'>2</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>map</span>.<span class='ident'>get</span>(<span class='string'>&quot;c&quot;</span>), <span class='prelude-val'>None</span>);
 </pre>
 </div></section>
     <section id='search' class="content hidden"></section>

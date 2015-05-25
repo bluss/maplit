@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `maplit` crate.">
     <meta name="keywords" content="rust, rustlang, rust-lang, maplit">
 
-    <title>maplit - 0.1.0 - maplit - Rust</title>
+    <title>maplit - 0.1.1 - maplit - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -45,13 +45,13 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-0' class='srclink' href='../src/maplit/lib.rs.html#1-201' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-0' class='srclink' href='../src/maplit/lib.rs.html#1-206' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Macros for container literals with specific type.</p>
 <pre id='rust-example-rendered' class='rust '>
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>maplit</span>;
 
-<span class='kw'>let</span> <span class='ident'>foo</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>{
+<span class='kw'>let</span> <span class='ident'>map</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>{
     <span class='string'>&quot;a&quot;</span> <span class='op'>=&gt;</span> <span class='number'>1</span>,
     <span class='string'>&quot;b&quot;</span> <span class='op'>=&gt;</span> <span class='number'>2</span>,
 };
@@ -60,6 +60,11 @@
 <p>The <strong>maplit</strong> crate uses <code>=&gt;</code> syntax for the mapping macros. It is
 not possible to use <code>:</code> as separator due to syntactic the restrictions in
 regular <code>macro_rules!</code> macros.</p>
+
+<p>Note that rust macros are flexible in which brackets you use for the invocation.
+You can use them as <code>hashmap!{}</code> or <code>hashmap![]</code> or <code>hashmap!()</code>.
+This crate suggests <code>{}</code> as the convention for the map &amp; set macros,
+it matches their <code>Debug</code> output.</p>
 
 <p>Generic container macros already exist elsewhere, so those are not provided
 here at the moment.</p>

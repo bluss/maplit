@@ -241,6 +241,11 @@
 <span id="199">199</span>
 <span id="200">200</span>
 <span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
 
@@ -251,7 +256,7 @@
 <span class='doccomment'>//! extern crate maplit;</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! # fn main() {</span>
-<span class='doccomment'>//! let foo = hashmap!{</span>
+<span class='doccomment'>//! let map = hashmap!{</span>
 <span class='doccomment'>//!     &quot;a&quot; =&gt; 1,</span>
 <span class='doccomment'>//!     &quot;b&quot; =&gt; 2,</span>
 <span class='doccomment'>//! };</span>
@@ -261,6 +266,11 @@
 <span class='doccomment'>//! The **maplit** crate uses `=&gt;` syntax for the mapping macros. It is</span>
 <span class='doccomment'>//! not possible to use `:` as separator due to syntactic the restrictions in</span>
 <span class='doccomment'>//! regular `macro_rules!` macros.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Note that rust macros are flexible in which brackets you use for the invocation.</span>
+<span class='doccomment'>//! You can use them as `hashmap!{}` or `hashmap![]` or `hashmap!()`.</span>
+<span class='doccomment'>//! This crate suggests `{}` as the convention for the map &amp; set macros,</span>
+<span class='doccomment'>//! it matches their `Debug` output.</span>
 <span class='doccomment'>//!</span>
 <span class='doccomment'>//! Generic container macros already exist elsewhere, so those are not provided</span>
 <span class='doccomment'>//! here at the moment.</span>
@@ -275,25 +285,25 @@
 <span class='doccomment'>/// extern crate maplit;</span>
 <span class='doccomment'>/// # fn main() {</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// let foo = hashmap!{</span>
+<span class='doccomment'>/// let map = hashmap!{</span>
 <span class='doccomment'>///     &quot;a&quot; =&gt; 1,</span>
 <span class='doccomment'>///     &quot;b&quot; =&gt; 2,</span>
 <span class='doccomment'>/// };</span>
-<span class='doccomment'>/// assert_eq!(foo[&quot;a&quot;], 1);</span>
-<span class='doccomment'>/// assert_eq!(foo[&quot;b&quot;], 2);</span>
-<span class='doccomment'>/// assert_eq!(foo.get(&quot;c&quot;), None);</span>
+<span class='doccomment'>/// assert_eq!(map[&quot;a&quot;], 1);</span>
+<span class='doccomment'>/// assert_eq!(map[&quot;b&quot;], 2);</span>
+<span class='doccomment'>/// assert_eq!(map.get(&quot;c&quot;), None);</span>
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>hashmap</span> {
-    (<span class='ident'>__count</span>) <span class='op'>=&gt;</span> (<span class='number'>0</span>);
-    (<span class='ident'>__count</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>a</span>:<span class='ident'>tt</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>:<span class='ident'>tt</span>,)<span class='op'>*</span>) <span class='op'>=&gt;</span> (<span class='number'>1</span> <span class='op'>+</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='ident'>__count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>,)<span class='op'>*</span>));
+    (<span class='kw-2'>@</span><span class='ident'>count</span>) <span class='op'>=&gt;</span> (<span class='number'>0</span>);
+    (<span class='kw-2'>@</span><span class='ident'>count</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>a</span>:<span class='ident'>tt</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>:<span class='ident'>tt</span>,)<span class='op'>*</span>) <span class='op'>=&gt;</span> (<span class='number'>1</span> <span class='op'>+</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='kw-2'>@</span><span class='ident'>count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>,)<span class='op'>*</span>));
     
     <span class='comment'>// trailing comma case</span>
     ($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>:<span class='ident'>expr</span>,)<span class='op'>+</span>) <span class='op'>=&gt;</span> (<span class='macro'>hashmap</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>),<span class='op'>+</span>));
     
     ( $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span> <span class='op'>=&gt;</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>:<span class='ident'>expr</span>),<span class='op'>*</span> ) <span class='op'>=&gt;</span> {
         {
-            <span class='kw'>let</span> <span class='ident'>_cap</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='ident'>__count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>,)<span class='op'>*</span>);
+            <span class='kw'>let</span> <span class='ident'>_cap</span> <span class='op'>=</span> <span class='macro'>hashmap</span><span class='macro'>!</span>(<span class='kw-2'>@</span><span class='ident'>count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>,)<span class='op'>*</span>);
             <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>_map</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashMap</span>::<span class='ident'>with_capacity</span>(<span class='ident'>_cap</span>);
             $(
                 <span class='ident'>_map</span>.<span class='ident'>insert</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>value</span>);
@@ -312,23 +322,23 @@
 <span class='doccomment'>/// extern crate maplit;</span>
 <span class='doccomment'>/// # fn main() {</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// let foo = hashset!{&quot;a&quot;, &quot;b&quot;};</span>
-<span class='doccomment'>/// assert!(foo.contains(&quot;a&quot;));</span>
-<span class='doccomment'>/// assert!(foo.contains(&quot;b&quot;));</span>
-<span class='doccomment'>/// assert!(!foo.contains(&quot;c&quot;));</span>
+<span class='doccomment'>/// let set = hashset!{&quot;a&quot;, &quot;b&quot;};</span>
+<span class='doccomment'>/// assert!(set.contains(&quot;a&quot;));</span>
+<span class='doccomment'>/// assert!(set.contains(&quot;b&quot;));</span>
+<span class='doccomment'>/// assert!(!set.contains(&quot;c&quot;));</span>
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='attribute'>#[<span class='ident'>macro_export</span>]</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>hashset</span> {
-    (<span class='ident'>__count</span>) <span class='op'>=&gt;</span> (<span class='number'>0</span>);
-    (<span class='ident'>__count</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>a</span>:<span class='ident'>tt</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>:<span class='ident'>tt</span>,)<span class='op'>*</span>) <span class='op'>=&gt;</span> (<span class='number'>1</span> <span class='op'>+</span> <span class='macro'>hashset</span><span class='macro'>!</span>(<span class='ident'>__count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>,)<span class='op'>*</span>));
+    (<span class='kw-2'>@</span><span class='ident'>count</span>) <span class='op'>=&gt;</span> (<span class='number'>0</span>);
+    (<span class='kw-2'>@</span><span class='ident'>count</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>a</span>:<span class='ident'>tt</span>, $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>:<span class='ident'>tt</span>,)<span class='op'>*</span>) <span class='op'>=&gt;</span> (<span class='number'>1</span> <span class='op'>+</span> <span class='macro'>hashset</span><span class='macro'>!</span>(<span class='kw-2'>@</span><span class='ident'>count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>rest</span>,)<span class='op'>*</span>));
     
     <span class='comment'>// trailing comma case</span>
     ($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>,)<span class='op'>+</span>) <span class='op'>=&gt;</span> (<span class='macro'>hashset</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>),<span class='op'>+</span>));
     
     ( $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>),<span class='op'>*</span> ) <span class='op'>=&gt;</span> {
         {
-            <span class='kw'>let</span> <span class='ident'>_cap</span> <span class='op'>=</span> <span class='macro'>hashset</span><span class='macro'>!</span>(<span class='ident'>__count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>,)<span class='op'>*</span>);
+            <span class='kw'>let</span> <span class='ident'>_cap</span> <span class='op'>=</span> <span class='macro'>hashset</span><span class='macro'>!</span>(<span class='kw-2'>@</span><span class='ident'>count</span> $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>,)<span class='op'>*</span>);
             <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>_set</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>HashSet</span>::<span class='ident'>with_capacity</span>(<span class='ident'>_cap</span>);
             $(
                 <span class='ident'>_set</span>.<span class='ident'>insert</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>);
@@ -348,13 +358,13 @@
 <span class='doccomment'>/// extern crate maplit;</span>
 <span class='doccomment'>/// # fn main() {</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// let foo = btreemap!{</span>
+<span class='doccomment'>/// let map = btreemap!{</span>
 <span class='doccomment'>///     &quot;a&quot; =&gt; 1,</span>
 <span class='doccomment'>///     &quot;b&quot; =&gt; 2,</span>
 <span class='doccomment'>/// };</span>
-<span class='doccomment'>/// assert_eq!(foo[&quot;a&quot;], 1);</span>
-<span class='doccomment'>/// assert_eq!(foo[&quot;b&quot;], 2);</span>
-<span class='doccomment'>/// assert_eq!(foo.get(&quot;c&quot;), None);</span>
+<span class='doccomment'>/// assert_eq!(map[&quot;a&quot;], 1);</span>
+<span class='doccomment'>/// assert_eq!(map[&quot;b&quot;], 2);</span>
+<span class='doccomment'>/// assert_eq!(map.get(&quot;c&quot;), None);</span>
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>btreemap</span> {
@@ -382,10 +392,10 @@
 <span class='doccomment'>/// extern crate maplit;</span>
 <span class='doccomment'>/// # fn main() {</span>
 <span class='doccomment'>///</span>
-<span class='doccomment'>/// let foo = btreeset!{&quot;a&quot;, &quot;b&quot;};</span>
-<span class='doccomment'>/// assert!(foo.contains(&quot;a&quot;));</span>
-<span class='doccomment'>/// assert!(foo.contains(&quot;b&quot;));</span>
-<span class='doccomment'>/// assert!(!foo.contains(&quot;c&quot;));</span>
+<span class='doccomment'>/// let set = btreeset!{&quot;a&quot;, &quot;b&quot;};</span>
+<span class='doccomment'>/// assert!(set.contains(&quot;a&quot;));</span>
+<span class='doccomment'>/// assert!(set.contains(&quot;b&quot;));</span>
+<span class='doccomment'>/// assert!(!set.contains(&quot;c&quot;));</span>
 <span class='doccomment'>/// # }</span>
 <span class='doccomment'>/// ```</span>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>btreeset</span> {
