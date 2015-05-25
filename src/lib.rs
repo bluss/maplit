@@ -41,15 +41,15 @@
 /// # }
 /// ```
 macro_rules! hashmap {
-    (__count) => (0);
-    (__count $a:tt, $($rest:tt,)*) => (1 + hashmap!(__count $($rest,)*));
+    (@count) => (0);
+    (@count $a:tt, $($rest:tt,)*) => (1 + hashmap!(@count $($rest,)*));
     
     // trailing comma case
     ($($key:expr => $value:expr,)+) => (hashmap!($($key => $value),+));
     
     ( $($key:expr => $value:expr),* ) => {
         {
-            let _cap = hashmap!(__count $($key,)*);
+            let _cap = hashmap!(@count $($key,)*);
             let mut _map = ::std::collections::HashMap::with_capacity(_cap);
             $(
                 _map.insert($key, $value);
@@ -76,15 +76,15 @@ macro_rules! hashmap {
 /// ```
 #[macro_export]
 macro_rules! hashset {
-    (__count) => (0);
-    (__count $a:tt, $($rest:tt,)*) => (1 + hashset!(__count $($rest,)*));
+    (@count) => (0);
+    (@count $a:tt, $($rest:tt,)*) => (1 + hashset!(@count $($rest,)*));
     
     // trailing comma case
     ($($key:expr,)+) => (hashset!($($key),+));
     
     ( $($key:expr),* ) => {
         {
-            let _cap = hashset!(__count $($key,)*);
+            let _cap = hashset!(@count $($key,)*);
             let mut _set = ::std::collections::HashSet::with_capacity(_cap);
             $(
                 _set.insert($key);
