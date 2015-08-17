@@ -19,6 +19,10 @@ __ http://bluss.github.io/maplit/
 Recent Changes
 --------------
 
+- 0.1.2
+
+  - Now supports more arguments in hashset!{} and hashmap!{}
+
 - 0.1.0
 
   - Initial release
