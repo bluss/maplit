@@ -3,8 +3,7 @@
 //! Macros for container literals with specific type.
 //! 
 //! ```
-//! #[macro_use]
-//! extern crate maplit;
+//! #[macro_use] extern crate maplit;
 //!
 //! # fn main() {
 //! let map = hashmap!{
@@ -32,8 +31,7 @@
 /// ## Example
 ///
 /// ```
-/// #[macro_use]
-/// extern crate maplit;
+/// #[macro_use] extern crate maplit;
 /// # fn main() {
 ///
 /// let map = hashmap!{
@@ -66,8 +64,7 @@ macro_rules! hashmap {
 /// ## Example
 ///
 /// ```
-/// #[macro_use]
-/// extern crate maplit;
+/// #[macro_use] extern crate maplit;
 /// # fn main() {
 ///
 /// let set = hashset!{"a", "b"};
@@ -99,8 +96,7 @@ macro_rules! hashset {
 /// ## Example
 ///
 /// ```
-/// #[macro_use]
-/// extern crate maplit;
+/// #[macro_use] extern crate maplit;
 /// # fn main() {
 ///
 /// let map = btreemap!{
@@ -133,8 +129,7 @@ macro_rules! btreemap {
 /// ## Example
 ///
 /// ```
-/// #[macro_use]
-/// extern crate maplit;
+/// #[macro_use] extern crate maplit;
 /// # fn main() {
 ///
 /// let set = btreeset!{"a", "b"};
