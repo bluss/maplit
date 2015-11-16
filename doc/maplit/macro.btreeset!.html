@@ -7,7 +7,7 @@
     <meta name="description" content="API documentation for the Rust `btreeset!` macro in crate `maplit`.">
     <meta name="keywords" content="rust, rustlang, rust-lang, btreeset!">
 
-    <title>maplit 0.1.2 - maplit::btreeset! - Rust</title>
+    <title>maplit 0.1.3 - maplit::btreeset! - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../main.css">
 
@@ -24,10 +24,10 @@
 
     
 
-    <section class="sidebar">
+    <nav class="sidebar">
         
         <p class='location'><a href='index.html'>maplit</a></p><script>window.sidebarCurrent = {name: 'btreeset!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
-    </section>
+    </nav>
 
     <nav class="sub">
         <form class="search-form js-only">
@@ -45,7 +45,7 @@
             <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                 [<span class='inner'>&#x2212;</span>]
             </a>
-        </span><a id='src-7' class='srclink' href='../src/maplit/lib.rs.html#141-153' title='goto source code'>[src]</a></span></h1>
+        </span><a id='src-7' class='srclink' href='../src/maplit/lib.rs.html#143-155' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>btreeset</span> {
     ($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>,)<span class='op'>+</span>) <span class='op'>=&gt;</span> (<span class='macro'>btreeset</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>),<span class='op'>+</span>));
@@ -62,8 +62,7 @@
 }</pre>
 <div class='docblock'><p>Create a <strong>BTreeSet</strong> from a list of elements.</p>
 
-<h2 id="example" class='section-header'><a
-                           href="#example">Example</a></h2><pre class='rust rust-example-rendered'>
+<h2 id='example' class='section-header'><a href='#example'>Example</a></h2><pre class='rust rust-example-rendered'>
 <span class='attribute'>#[<span class='ident'>macro_use</span>]</span> <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>maplit</span>;
 
 <span class='kw'>let</span> <span class='ident'>set</span> <span class='op'>=</span> <span class='macro'>btreeset</span><span class='macro'>!</span>{<span class='string'>&quot;a&quot;</span>, <span class='string'>&quot;b&quot;</span>};
@@ -75,10 +74,12 @@
 
     <section class="footer"></section>
 
-    <div id="help" class="hidden">
+    <aside id="help" class="hidden">
         <div>
+            <h1 class="hidden">Help</h1>
+
             <div class="shortcuts">
-                <h1>Keyboard Shortcuts</h1>
+                <h2>Keyboard Shortcuts</h2>
 
                 <dl>
                     <dt>?</dt>
@@ -95,7 +96,7 @@
             </div>
 
             <div class="infos">
-                <h1>Search Tricks</h1>
+                <h2>Search Tricks</h2>
 
                 <p>
                     Prefix searches with a type followed by a colon (e.g.
@@ -115,7 +116,7 @@
                 </p>
             </div>
         </div>
-    </div>
+    </aside>
 
     
 
