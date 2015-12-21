@@ -9,6 +9,7 @@
 
     <title>maplit 0.1.3 - maplit::btreeset! - Rust</title>
 
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../main.css">
 
     
@@ -48,17 +49,8 @@
         </span><a id='src-7' class='srclink' href='../src/maplit/lib.rs.html#143-155' title='goto source code'>[src]</a></span></h1>
 <pre class='rust macro'>
 <span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>btreeset</span> {
-    ($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>,)<span class='op'>+</span>) <span class='op'>=&gt;</span> (<span class='macro'>btreeset</span><span class='macro'>!</span>($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>),<span class='op'>+</span>));
-    
-    ( $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>),<span class='op'>*</span> ) <span class='op'>=&gt;</span> {
-        {
-            <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>_set</span> <span class='op'>=</span> ::<span class='ident'>std</span>::<span class='ident'>collections</span>::<span class='ident'>BTreeSet</span>::<span class='ident'>new</span>();
-            $(
-                <span class='ident'>_set</span>.<span class='ident'>insert</span>(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>);
-            )<span class='op'>*</span>
-            <span class='ident'>_set</span>
-        }
-    };
+    ($(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>,)<span class='op'>+</span>) <span class='op'>=&gt;</span> { ... };
+    ( $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>key</span>:<span class='ident'>expr</span>),<span class='op'>*</span> ) <span class='op'>=&gt;</span> { ... };
 }</pre>
 <div class='docblock'><p>Create a <strong>BTreeSet</strong> from a list of elements.</p>
 
@@ -128,6 +120,6 @@
     <script src="../jquery.js"></script>
     <script src="../main.js"></script>
     
-    <script async src="../search-index.js"></script>
+    <script defer src="../search-index.js"></script>
 </body>
 </html>
