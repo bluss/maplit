@@ -51,11 +51,11 @@ macro_rules! hashmap {
     ($($key:expr => $value:expr),*) => {
         {
             let _cap = hashmap!(@count $($key),*);
-            let mut _map = ::std::collections::HashMap::with_capacity(_cap);
+            let mut map = ::std::collections::HashMap::with_capacity(_cap);
             $(
-                _map.insert($key, $value);
+                map.insert($key, $value);
             )*
-            _map
+            map
         }
     };
 }
@@ -116,11 +116,11 @@ macro_rules! btreemap {
     
     ( $($key:expr => $value:expr),* ) => {
         {
-            let mut _map = ::std::collections::BTreeMap::new();
+            let mut map = ::std::collections::BTreeMap::new();
             $(
-                _map.insert($key, $value);
+                map.insert($key, $value);
             )*
-            _map
+            map
         }
     };
 }
