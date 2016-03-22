@@ -1,4 +1,5 @@
 #![warn(missing_docs)]
+#![allow(unused_mut)]
 
 //! Macros for container literals with specific type.
 //! 
@@ -50,12 +51,12 @@ macro_rules! hashmap {
     ($($key:expr => $value:expr,)+) => { hashmap!($($key => $value),+) };
     ($($key:expr => $value:expr),*) => {
         {
-            let _cap = hashmap!(@count $($key),*);
-            let mut _map = ::std::collections::HashMap::with_capacity(_cap);
+            let cap = hashmap!(@count $($key),*);
+            let mut map = ::std::collections::HashMap::with_capacity(cap);
             $(
-                _map.insert($key, $value);
+                map.insert($key, $value);
             )*
-            _map
+            map
         }
     };
 }
@@ -82,8 +83,8 @@ macro_rules! hashset {
     ($($key:expr,)+) => { hashset!($($key),+) };
     ($($key:expr),*) => {
         {
-            let _cap = hashset!(@count $($key),*);
-            let mut _set = ::std::collections::HashSet::with_capacity(_cap);
+            let cap = hashset!(@count $($key),*);
+            let mut _set = ::std::collections::HashSet::with_capacity(cap);
             $(
                 _set.insert($key);
             )*
@@ -116,11 +117,11 @@ macro_rules! btreemap {
     
     ( $($key:expr => $value:expr),* ) => {
         {
-            let mut _map = ::std::collections::BTreeMap::new();
+            let mut map = ::std::collections::BTreeMap::new();
             $(
-                _map.insert($key, $value);
+                map.insert($key, $value);
             )*
-            _map
+            map
         }
     };
 }
