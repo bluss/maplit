@@ -11,3 +11,10 @@ description = "Container / collection literal macros for HashMap, HashSet, BTree
 
 keywords = ["literal", "data-structure", "hashmap", "macro"]
 
+[dependencies]
+clippy = {version = "~0.0.23", optional = true}
+
+[features]
+default = []
+dev = ["clippy"]
+
