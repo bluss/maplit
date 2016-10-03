@@ -5,7 +5,7 @@ Container / collection literal macros for HashMap, HashSet, BTreeMap, BTreeSet.
 
 Please read the `API documentation here`__
 
-__ http://bluss.github.io/maplit/
+__ https://docs.rs/maplit/
 
 |build_status|_ |crates|_
 
