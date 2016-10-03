@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["btreemap!","Create a **BTreeMap** from a list of key-value pairs"],["btreeset!","Create a **BTreeSet** from a list of elements."],["hashmap!","Create a **HashMap** from a list of key-value pairs"],["hashset!","Create a **HashSet** from a list of elements."]]});
