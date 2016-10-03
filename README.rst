@@ -19,6 +19,10 @@ __ https://docs.rs/maplit/
 Recent Changes
 --------------
 
+- 0.1.4
+
+  - Update docs to point to docs.rs
+
 - 0.1.2
 
   - Now supports more arguments in hashset!{} and hashmap!{}
