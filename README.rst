@@ -1,7 +1,9 @@
 maplit
 ======
 
-Container / collection literal macros for HashMap, HashSet, BTreeMap, BTreeSet.
+Container / collection literal macros for `HashMap <https://doc.rust-lang.org/beta/std/collections/struct.HashMap.html>`_, `HashSet <https://doc.rust-lang.org/beta/std/collections/struct.HashSet.html>`_, `BTreeMap <https://doc.rust-lang.org/beta/std/collections/struct.BTreeMap.html>`_, `BTreeSet <https://doc.rust-lang.org/beta/std/collections/struct.BTreeSet.html>`_.
+
+You can use these for convenience. Using them has no other implications.
 
 Please read the `API documentation here`__
 
