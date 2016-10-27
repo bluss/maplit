@@ -47,18 +47,73 @@
 macro_rules! hashmap {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashmap!(@single $rest)),*]));
-    
-    ($($key:expr => $value:expr,)+) => { hashmap!($($key => $value),+) };
-    ($($key:expr => $value:expr),*) => {
-        {
-            let _cap = hashmap!(@count $($key),*);
-            let mut _map = ::std::collections::HashMap::with_capacity(_cap);
-            $(
-                _map.insert($key, $value);
-            )*
-            _map
-        }
+    (@with_capacity regular $cap:expr) => {
+        ::std::collections::HashMap::with_capacity($cap)
     };
+    (@with_capacity any $cap:expr) => {
+        ::std::collections::HashMap::with_capacity_and_hasher($cap, ::std::default::Default::default())
+    };
+    (@create Options {
+        capacity = $cap:expr,
+        hasher=$hasher:ident,
+    }
+        $($key:expr => $value:expr),*
+    ) => {{
+        let _cap = if $cap == 0 { hashmap!(@count $($key),*) } else { $cap };
+        let mut _map = hashmap!(@with_capacity $hasher _cap);
+        $(
+            _map.insert($key, $value);
+        )*
+        _map
+    }};
+    
+    (@parse [] Options $opt:tt $($key:expr => $value:expr),*) => {
+        hashmap!(@create Options $opt $($key => $value),*) 
+    };
+    (@parse [capacity=$cap:expr, $($alt:tt)*] Options {
+        capacity=$_ignore:expr,
+        hasher=$hasher:ident,
+    }
+    $($tail:tt)*
+    ) => {
+        hashmap!(@parse [$($alt)*] Options {
+            capacity=$cap,
+            hasher=$hasher,
+        } $($tail)*)
+    };
+    (@parse [capacity=$cap:expr] $($tail:tt)*) => {
+        hashmap!(@parse [capacity=$cap,] $($tail)*)
+    };
+    (@parse [hasher=$hasher:ident , $($alt:tt)*] Options {
+        capacity=$cap:expr,
+        hasher=$_ignore:ident,
+    }
+    $($tail:tt)*
+    ) => {
+        hashmap!(@parse [$($alt)*] Options {
+            capacity=$cap,
+            hasher=$hasher,
+        } $($tail)*)
+    };
+    (@parse [hasher=$hasher:ident] $($tail:tt)*) => {
+        hashmap!(@parse [hasher=$hasher,] $($tail)*)
+    };
+    (@parse [key_map=$e:expr , $($alt:tt)*] Options $opt:tt $($key:expr => $value:expr),*) => {
+        hashmap!(@parse [$($alt)*] Options $opt $($e($key) => $value),*)
+    };
+    (@parse [key_map=$e:expr] $($tail:tt)*) => {
+        hashmap!(@parse [key_map=$e,] $($tail)*)
+    };
+    ([$($alt:tt)*] $($key:expr => $value:expr,)+) => { hashmap!([$($alt)*] $($key => $value),+) };
+    ([$($alt:tt)*] $($key:expr => $value:expr),*) => {
+        hashmap!(@parse [$($alt)*] Options {
+            capacity=0,
+            hasher=regular,
+        }
+        $($key => $value),*)
+    };
+    ($($key:expr => $value:expr,)+) => { hashmap!($($key => $value),+) };
+    ($($key:expr => $value:expr),*) => { hashmap!([] $($key => $value),*) };
 }
 
 /// Create a **HashSet** from a list of elements.
@@ -173,6 +228,18 @@ fn test_hashmap() {
     let _nested_compiles = hashmap!{
         1 => hashmap!{0 => 1 + 2,},
         2 => hashmap!{1 => 1,},
+    };
+
+    let names: HashMap<String, _> = hashmap!{
+        [key_map=String::from]
+        "one" => 1,
+        "two" => 2,
+    };
+
+    let names: HashMap<String, _> = hashmap!{
+        [key_map=String::from, hasher=any, capacity = 10]
+        "one" => 1,
+        "two" => 2,
     };
 }
 
