@@ -15,7 +15,7 @@
 //! ```
 //!
 //! The **maplit** crate uses `=>` syntax for the mapping macros. It is
-//! not possible to use `:` as separator due to syntactic the restrictions in
+//! not possible to use `:` as separator due to syntactic restrictions in
 //! regular `macro_rules!` macros.
 //!
 //! Note that rust macros are flexible in which brackets you use for the invocation.
