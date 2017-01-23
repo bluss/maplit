@@ -9,5 +9,5 @@ documentation = "https://docs.rs/maplit/"
 
 description = "Container / collection literal macros for HashMap, HashSet, BTreeMap, BTreeSet."
 
-keywords = ["literal", "data-structure", "hashmap", "macro"]
+keywords = ["literal", "data-structure", "hashmap", "macro", "map"]
 
