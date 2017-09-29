@@ -21,6 +21,12 @@ __ https://docs.rs/maplit/
 Recent Changes
 --------------
 
+- 0.1.5
+
+  - Add license files correctly
+  - Add crates.io category
+  - Small doc improvements by @seeekr and @sanmai-NL
+
 - 0.1.4
 
   - Update docs to point to docs.rs

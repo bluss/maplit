@@ -1,6 +1,6 @@
 [package]
 name = "maplit"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["bluss"]
 
 license = "MIT/Apache-2.0"
@@ -10,4 +10,7 @@ documentation = "https://docs.rs/maplit/"
 description = "Container / collection literal macros for HashMap, HashSet, BTreeMap, BTreeSet."
 
 keywords = ["literal", "data-structure", "hashmap", "macro"]
+categories = ["rust-patterns"]
 
+[package.metadata.release]
+no-dev-version = true
