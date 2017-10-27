@@ -44,6 +44,17 @@ Recent Changes
 
   - Initial release
 
+FAQ
+---
+
+**Question:** Very large maps take a long time to compile?
+
+**Answer:** Rustc is very slow to compile big expressions with many literals
+(including integers and float literals). Work around this by either
+using explicitly typed literals, or explicitly typed conversions.
+See https://github.com/bluss/maplit/issues/14 for more information.
+
+
 License
 -------
 
