@@ -157,7 +157,7 @@ macro_rules! btreeset {
 
 /// Identity function. Used as the fallback for conversion.
 #[doc(hidden)]
-pub fn id<T>(t: T) -> T { t }
+pub fn __id<T>(t: T) -> T { t }
 
 /// Macro that converts the keys or key-value pairs passed to another maplit
 /// macro. The default conversion is to use the [`Into`] trait, if no
@@ -228,7 +228,7 @@ macro_rules! convert_args {
     };
     (keys=$kf:expr, $macro_name:ident !($($rest:tt)*)) => {
         convert_args! {
-            keys=$kf, values=$crate::id,
+            keys=$kf, values=$crate::__id,
             $macro_name !(
                 $($rest)*
             )
@@ -236,7 +236,7 @@ macro_rules! convert_args {
     };
     (values=$vf:expr, $macro_name:ident !($($rest:tt)*)) => {
         convert_args! {
-            keys=$crate::id, values=$vf,
+            keys=$crate::__id, values=$vf,
             $macro_name !(
                 $($rest)*
             )
@@ -277,7 +277,7 @@ fn test_hashmap() {
         "two" => 2,
     ));
 
-    let _: HashMap<String, i32> = convert_args!(keys=String::from, values=id, hashmap!(
+    let _: HashMap<String, i32> = convert_args!(keys=String::from, values=__id, hashmap!(
         "one" => 1,
         "two" => 2,
     ));
