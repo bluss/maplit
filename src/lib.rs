@@ -244,7 +244,7 @@ macro_rules! convert_args {
     };
     ($macro_name:ident ! $($rest:tt)*) => {
         convert_args! {
-            keys=Into::into, values=Into::into,
+            keys=::std::convert::Into::into, values=::std::convert::Into::into,
             $macro_name !
             $($rest)*
         }
