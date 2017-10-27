@@ -155,9 +155,106 @@ macro_rules! btreeset {
     };
 }
 
+/// Identity function. Used as the fallback for conversion.
+#[doc(hidden)]
+pub fn id<T>(t: T) -> T { t }
+
+/// Macro that converts the keys or key-value pairs passed to another maplit
+/// macro. The default conversion is to use the [`Into`] trait, if no
+/// custom conversion is passed.
+///
+/// The syntax is:
+///
+/// `convert_args!(` `keys=` *function* `,` `values=` *function* `,`
+///     *macro_name* `!(` [ *key* => *value* [, *key* => *value* ... ] ] `))`
+/// 
+/// Here *macro_name* is any other maplit macro and either or both of the
+/// explicit `keys=` and `values=` parameters can be omitted.
+///
+/// [`Into`]: https://doc.rust-lang.org/std/convert/trait.Into.html
+///
+///
+/// # Examples
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// # fn main() {
+///
+/// use std::collections::HashMap;
+/// use std::collections::BTreeSet;
+///
+/// // a. Use the default conversion with the Into trait.
+/// // Here this converts both the key and value string literals to `String`,
+/// // but we need to specify the map type exactly!
+///
+/// let map1: HashMap<String, String> = convert_args!(hashmap!(
+///     "a" => "b",
+///     "c" => "d",
+/// ));
+///
+/// // b. Specify an explicit custom conversion for the keys. If we don't specify
+/// // a conversion for the values, they are not converted at all.
+///
+/// let map2 = convert_args!(keys=String::from, hashmap!(
+///     "a" => 1,
+///     "c" => 2,
+/// ));
+///
+/// // Note: map2 is a HashMap<String, i32>, but we didn't need to specify the type
+/// let _: HashMap<String, i32> = map2;
+///
+/// // c. convert_args! works with all the maplit macros -- and macros from other
+/// // crates that have the same "signature".
+/// // For example, btreeset and conversion from &str to Box<str>:
+///
+/// let set: BTreeSet<Box<str>> = convert_args!(btreeset!(
+///     "a", "b", "c", "d", "a", "e", "f",
+/// ));
+/// assert_eq!(set.len(), 6);
+///
+///
+/// # }
+/// ```
+#[macro_export]
+macro_rules! convert_args {
+    (keys=$kf:expr, $macro_name:ident !($($k:expr)* $(,)*)) => {
+        $macro_name! { $(($kf)($k)),* }
+    };
+    (keys=$kf:expr, values=$vf:expr, $macro_name:ident !($($k:expr),* $(,)*)) => {
+        $macro_name! { $(($kf)($k)),* }
+    };
+    (keys=$kf:expr, values=$vf:expr, $macro_name:ident !( $($k:expr => $v:expr),* $(,)*)) => {
+        $macro_name! { $(($kf)($k) => ($vf)($v)),* }
+    };
+    (keys=$kf:expr, $macro_name:ident !($($rest:tt)*)) => {
+        convert_args! {
+            keys=$kf, values=$crate::id,
+            $macro_name !(
+                $($rest)*
+            )
+        }
+    };
+    (values=$vf:expr, $macro_name:ident !($($rest:tt)*)) => {
+        convert_args! {
+            keys=$crate::id, values=$vf,
+            $macro_name !(
+                $($rest)*
+            )
+        }
+    };
+    ($macro_name:ident ! $($rest:tt)*) => {
+        convert_args! {
+            keys=Into::into, values=Into::into,
+            $macro_name !
+            $($rest)*
+        }
+    };
+}
+
 #[test]
 fn test_hashmap() {
     use std::collections::HashMap;
+    use std::collections::HashSet;
     let names = hashmap!{
         1 => "one",
         2 => "two",
@@ -174,6 +271,34 @@ fn test_hashmap() {
         1 => hashmap!{0 => 1 + 2,},
         2 => hashmap!{1 => 1,},
     };
+
+    let _: HashMap<String, i32> = convert_args!(keys=String::from, hashmap!(
+        "one" => 1,
+        "two" => 2,
+    ));
+
+    let _: HashMap<String, i32> = convert_args!(keys=String::from, values=id, hashmap!(
+        "one" => 1,
+        "two" => 2,
+    ));
+
+    let names: HashSet<String> = convert_args!(hashset!(
+        "one",
+        "two",
+    ));
+    assert!(names.contains("one"));
+    assert!(names.contains("two"));
+
+    let lengths: HashSet<usize> = convert_args!(keys=str::len, hashset!(
+        "one",
+        "two",
+    ));
+    assert_eq!(lengths.len(), 1);
+
+    let _no_trailing: HashSet<usize> = convert_args!(keys=str::len, hashset!(
+        "one",
+        "two"
+    ));
 }
 
 #[test]
