@@ -20,8 +20,6 @@
 //!
 //! Note that rust macros are flexible in which brackets you use for the invocation.
 //! You can use them as `hashmap!{}` or `hashmap![]` or `hashmap!()`.
-//! This crate suggests `{}` as the convention for the map & set macros,
-//! it matches their `Debug` output.
 //!
 //! Generic container macros already exist elsewhere, so those are not provided
 //! here at the moment.
