@@ -21,6 +21,11 @@ __ https://docs.rs/maplit/
 Recent Changes
 --------------
 
+- 0.1.6
+
+  - Add macro ``convert_args!`` for composable opt-in conversion of the
+    expressions being used for the maplit macros.
+
 - 0.1.5
 
   - Add license files correctly
