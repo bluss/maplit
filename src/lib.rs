@@ -205,9 +205,9 @@ pub fn id<T>(t: T) -> T { t }
 ///
 /// // c. convert_args! works with all the maplit macros -- and macros from other
 /// // crates that have the same "signature".
-/// // For example, btreeset and conversion from &str to Box<str>:
+/// // For example, btreeset and conversion from &str to Vec<u8>.
 ///
-/// let set: BTreeSet<Box<str>> = convert_args!(btreeset!(
+/// let set: BTreeSet<Vec<u8>> = convert_args!(btreeset!(
 ///     "a", "b", "c", "d", "a", "e", "f",
 /// ));
 /// assert_eq!(set.len(), 6);
@@ -217,7 +217,7 @@ pub fn id<T>(t: T) -> T { t }
 /// ```
 #[macro_export]
 macro_rules! convert_args {
-    (keys=$kf:expr, $macro_name:ident !($($k:expr)* $(,)*)) => {
+    (keys=$kf:expr, $macro_name:ident !($($k:expr),* $(,)*)) => {
         $macro_name! { $(($kf)($k)),* }
     };
     (keys=$kf:expr, values=$vf:expr, $macro_name:ident !($($k:expr),* $(,)*)) => {
