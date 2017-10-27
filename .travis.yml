@@ -3,9 +3,13 @@ sudo: false
 matrix:
   include:
     - rust: 1.14.0
+    - rust: 1.20.0
     - rust: stable
     - rust: beta
     - rust: nightly
+branches:
+  only:
+    - master
 script:
   - |
       cargo build --verbose --features "$FEATURES" &&
