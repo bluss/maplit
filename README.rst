@@ -21,6 +21,11 @@ __ https://docs.rs/maplit/
 Recent Changes
 --------------
 
+- 1.0.0
+
+  - maplit 1.0!
+  - Only documentation changes since the last version
+
 - 0.1.6
 
   - Add macro ``convert_args!`` for composable opt-in conversion of the
