@@ -53,7 +53,7 @@ macro_rules! hashmap {
             let _cap = hashmap!(@count $($key),*);
             let mut _map = ::std::collections::HashMap::with_capacity(_cap);
             $(
-                _map.insert($key, $value);
+                let _ = _map.insert($key, $value);
             )*
             _map
         }
@@ -85,7 +85,7 @@ macro_rules! hashset {
             let _cap = hashset!(@count $($key),*);
             let mut _set = ::std::collections::HashSet::with_capacity(_cap);
             $(
-                _set.insert($key);
+                let _ = _set.insert($key);
             )*
             _set
         }
@@ -118,7 +118,7 @@ macro_rules! btreemap {
         {
             let mut _map = ::std::collections::BTreeMap::new();
             $(
-                _map.insert($key, $value);
+                let _ = _map.insert($key, $value);
             )*
             _map
         }
