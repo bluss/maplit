@@ -3,7 +3,7 @@
 #![doc(html_root_url="https://docs.rs/maplit/1/")]
 
 //! Macros for container literals with specific type.
-//! 
+//!
 //! ```
 //! #[macro_use] extern crate maplit;
 //!
@@ -46,7 +46,7 @@
 macro_rules! hashmap {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashmap!(@single $rest)),*]));
-    
+
     ($($key:expr => $value:expr,)+) => { hashmap!($($key => $value),+) };
     ($($key:expr => $value:expr),*) => {
         {
@@ -78,7 +78,7 @@ macro_rules! hashmap {
 macro_rules! hashset {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashset!(@single $rest)),*]));
-    
+
     ($($key:expr,)+) => { hashset!($($key),+) };
     ($($key:expr),*) => {
         {
@@ -113,7 +113,7 @@ macro_rules! hashset {
 macro_rules! btreemap {
     // trailing comma case
     ($($key:expr => $value:expr,)+) => (btreemap!($($key => $value),+));
-    
+
     ( $($key:expr => $value:expr),* ) => {
         {
             let mut _map = ::std::collections::BTreeMap::new();
@@ -142,7 +142,7 @@ macro_rules! btreemap {
 /// ```
 macro_rules! btreeset {
     ($($key:expr,)+) => (btreeset!($($key),+));
-    
+
     ( $($key:expr),* ) => {
         {
             let mut _set = ::std::collections::BTreeSet::new();
@@ -166,7 +166,7 @@ pub fn __id<T>(t: T) -> T { t }
 ///
 /// `convert_args!(` `keys=` *function* `,` `values=` *function* `,`
 ///     *macro_name* `!(` [ *key* => *value* [, *key* => *value* ... ] ] `))`
-/// 
+///
 /// Here *macro_name* is any other maplit macro and either or both of the
 /// explicit `keys=` and `values=` parameters can be omitted.
 ///
@@ -262,7 +262,7 @@ fn test_hashmap() {
     assert_eq!(names[&1], "one");
     assert_eq!(names[&2], "two");
     assert_eq!(names.get(&3), None);
-    
+
     let empty: HashMap<i32, i32> = hashmap!{};
     assert_eq!(empty.len(), 0);
 
@@ -311,7 +311,7 @@ fn test_btreemap() {
     assert_eq!(names[&1], "one");
     assert_eq!(names[&2], "two");
     assert_eq!(names.get(&3), None);
-    
+
     let empty: BTreeMap<i32, i32> = btreemap!{};
     assert_eq!(empty.len(), 0);
 
