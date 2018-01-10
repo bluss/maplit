@@ -1,5 +1,5 @@
 #![warn(missing_docs)]
-#![deny(unused_results)]
+#![warn(unused_results)]
 #![doc(html_root_url="https://docs.rs/maplit/1/")]
 
 //! Macros for container literals with specific type.
