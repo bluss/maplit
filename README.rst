@@ -21,6 +21,10 @@ __ https://docs.rs/maplit/
 Recent Changes
 --------------
 
+- 1.0.1
+
+  - Fix ``unused_results`` lint in the macros by @povilasb
+
 - 1.0.0
 
   - maplit 1.0!
