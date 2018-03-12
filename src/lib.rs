@@ -15,7 +15,17 @@
 //! # }
 //! ```
 //!
-//! The **maplit** crate uses `=>` syntax to separate the key and value for the
+//! Or alternatively:
+//!
+//! ```
+//! #[macro_use] extern crate maplit;
+//!
+//! # fn main() {
+//! let map = hashmap!{("a", 1), ("b", 2),};
+//! # }
+//! ```
+//!
+//! The **maplit** crate uses `=>` or tuple syntax to separate the key and value for the
 //! mapping macros. (It was not possible to use `:` as separator due to syntactic
 //! restrictions in regular `macro_rules!` macros.)
 //!
@@ -43,6 +53,19 @@
 /// assert_eq!(map.get("c"), None);
 /// # }
 /// ```
+///
+/// Alternative syntax:
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// # fn main() {
+///
+/// let map = hashmap![("a", 1), ("b", 2)];
+/// assert_eq!(map["a"], 1);
+/// assert_eq!(map["b"], 2);
+/// assert_eq!(map.get("c"), None);
+/// # }
+/// ```
 macro_rules! hashmap {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashmap!(@single $rest)),*]));
@@ -58,6 +81,8 @@ macro_rules! hashmap {
             _map
         }
     };
+    ($(($key:expr, $value:expr),)+) => { hashmap!($($key => $value),*) };
+    ($(($key:expr, $value:expr)),*) => { hashmap!($($key => $value),*) };
 }
 
 /// Create a **HashSet** from a list of elements.
@@ -110,6 +135,18 @@ macro_rules! hashset {
 /// assert_eq!(map.get("c"), None);
 /// # }
 /// ```
+/// Alternative syntax:
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// # fn main() {
+///
+/// let map = btreemap![("a", 1), ("b", 2)];
+/// assert_eq!(map["a"], 1);
+/// assert_eq!(map["b"], 2);
+/// assert_eq!(map.get("c"), None);
+/// # }
+/// ```
 macro_rules! btreemap {
     // trailing comma case
     ($($key:expr => $value:expr,)+) => (btreemap!($($key => $value),+));
@@ -123,6 +160,8 @@ macro_rules! btreemap {
             _map
         }
     };
+    ($(($key:expr, $value:expr),)+) => { btreemap!($($key => $value),*) };
+    ($(($key:expr, $value:expr)),*) => { btreemap!($($key => $value),*) };
 }
 
 #[macro_export]
