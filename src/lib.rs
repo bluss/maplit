@@ -50,6 +50,7 @@ extern crate hashbrown;
 /// assert_eq!(map.get("c"), None);
 /// # }
 /// ```
+#[cfg(feature = "hashbrown")]
 macro_rules! hashmap {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashmap!(@single $rest)),*]));
@@ -58,14 +59,29 @@ macro_rules! hashmap {
     ($($key:expr => $value:expr),*) => {
         {
             let _cap = hashmap!(@count $($key),*);
-            #[cfg(feature = "hashbrown")]
             let mut _map = ::hashbrown::HashMap::with_capacity(_cap);
-            #[cfg(not(feature = "hashbrown"))]
-            let mut _map = ::std::collections::HashMap::with_capacity(_cap);
             $(
                 let _ = _map.insert($key, $value);
             )*
             _map
+        }
+    };
+}
+
+#[cfg(not(feature = "hashbrown"))]
+macro_rules! hashmap {
+    (@single $($x:tt)*) => (());
+    (@count $($rest:expr),*) => (<[()]>::len(&[$(hashmap!(@single $rest)),*]));
+
+    ($($key:expr => $value:expr,)+) => { hashmap!($($key => $value),+) };
+    ($($key:expr => $value:expr),*) => {
+        {
+            let _cap = hashmap!(@count $($key),*);
+            let mut _map = ::std::collections::HashMap::with_capacity(_cap);
+            $(
+                let _ = _map.insert($key, $value);
+            )*
+                _map
         }
     };
 }
@@ -87,6 +103,7 @@ macro_rules! hashmap {
 /// # }
 /// ```
 #[macro_export]
+#[cfg(feature = "hashbrown")]
 macro_rules! hashset {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashset!(@single $rest)),*]));
@@ -95,14 +112,28 @@ macro_rules! hashset {
     ($($key:expr),*) => {
         {
             let _cap = hashset!(@count $($key),*);
-            #[cfg(feature = "hashbrown")]
             let mut _set = ::hashbrown::HashSet::with_capacity(_cap);
-            #[cfg(not(feature = "hashbrown"))]
-            let mut _set = ::std::collections::HashSet::with_capacity(_cap);
             $(
                 let _ = _set.insert($key);
             )*
             _set
+        }
+    };
+}
+#[cfg(not(feature = "hashbrown"))]
+macro_rules! hashset {
+    (@single $($x:tt)*) => (());
+    (@count $($rest:expr),*) => (<[()]>::len(&[$(hashset!(@single $rest)),*]));
+
+    ($($key:expr,)+) => { hashset!($($key),+) };
+    ($($key:expr),*) => {
+        {
+            let _cap = hashset!(@count $($key),*);
+            let mut _set = ::std::collections::HashSet::with_capacity(_cap);
+            $(
+                let _ = _set.insert($key);
+            )*
+                _set
         }
     };
 }
