@@ -1,6 +1,6 @@
 #![warn(missing_docs)]
 #![warn(unused_results)]
-#![doc(html_root_url="https://docs.rs/maplit/1/")]
+#![doc(html_root_url = "https://docs.rs/maplit/1/")]
 
 //! Macros for container literals with specific type.
 //!
@@ -159,6 +159,7 @@ macro_rules! btreemap {
 /// assert!(!set.contains("c"));
 /// # }
 /// ```
+
 macro_rules! btreeset {
     ($($key:expr,)+) => (btreeset!($($key),+));
 
@@ -175,7 +176,9 @@ macro_rules! btreeset {
 
 /// Identity function. Used as the fallback for conversion.
 #[doc(hidden)]
-pub fn __id<T>(t: T) -> T { t }
+pub fn __id<T>(t: T) -> T {
+    t
+}
 
 /// Macro that converts the keys or key-value pairs passed to another maplit
 /// macro. The default conversion is to use the [`Into`] trait, if no
@@ -284,7 +287,7 @@ fn test_hashmap() {
     use std::collections::HashMap;
     #[cfg(not(feature = "hashbrown"))]
     use std::collections::HashSet;
-    let names = hashmap!{
+    let names = hashmap! {
         1 => "one",
         2 => "two",
     };
@@ -293,47 +296,45 @@ fn test_hashmap() {
     assert_eq!(names[&2], "two");
     assert_eq!(names.get(&3), None);
 
-    let empty: HashMap<i32, i32> = hashmap!{};
+    let empty: HashMap<i32, i32> = hashmap! {};
     assert_eq!(empty.len(), 0);
 
-    let _nested_compiles = hashmap!{
+    let _nested_compiles = hashmap! {
         1 => hashmap!{0 => 1 + 2,},
         2 => hashmap!{1 => 1,},
     };
 
-    let _: HashMap<String, i32> = convert_args!(keys=String::from, hashmap!(
-        "one" => 1,
-        "two" => 2,
-    ));
+    let _: HashMap<String, i32> = convert_args!(
+        keys = String::from,
+        hashmap!(
+            "one" => 1,
+            "two" => 2,
+        )
+    );
 
-    let _: HashMap<String, i32> = convert_args!(keys=String::from, values=__id, hashmap!(
-        "one" => 1,
-        "two" => 2,
-    ));
+    let _: HashMap<String, i32> = convert_args!(
+        keys = String::from,
+        values = __id,
+        hashmap!(
+            "one" => 1,
+            "two" => 2,
+        )
+    );
 
-    let names: HashSet<String> = convert_args!(hashset!(
-        "one",
-        "two",
-    ));
+    let names: HashSet<String> = convert_args!(hashset!("one", "two",));
     assert!(names.contains("one"));
     assert!(names.contains("two"));
 
-    let lengths: HashSet<usize> = convert_args!(keys=str::len, hashset!(
-        "one",
-        "two",
-    ));
+    let lengths: HashSet<usize> = convert_args!(keys = str::len, hashset!("one", "two",));
     assert_eq!(lengths.len(), 1);
 
-    let _no_trailing: HashSet<usize> = convert_args!(keys=str::len, hashset!(
-        "one",
-        "two"
-    ));
+    let _no_trailing: HashSet<usize> = convert_args!(keys = str::len, hashset!("one", "two"));
 }
 
 #[test]
 fn test_btreemap() {
     use std::collections::BTreeMap;
-    let names = btreemap!{
+    let names = btreemap! {
         1 => "one",
         2 => "two",
     };
@@ -342,10 +343,10 @@ fn test_btreemap() {
     assert_eq!(names[&2], "two");
     assert_eq!(names.get(&3), None);
 
-    let empty: BTreeMap<i32, i32> = btreemap!{};
+    let empty: BTreeMap<i32, i32> = btreemap! {};
     assert_eq!(empty.len(), 0);
 
-    let _nested_compiles = btreemap!{
+    let _nested_compiles = btreemap! {
         1 => btreemap!{0 => 1 + 2,},
         2 => btreemap!{1 => 1,},
     };
