@@ -6,6 +6,8 @@
 //!
 //! ```
 //! #[macro_use] extern crate maplit;
+//! #[cfg(feature = "hashbrown")]
+//! extern crate hashbrown;
 //!
 //! # fn main() {
 //! let map = hashmap!{
@@ -25,6 +27,9 @@
 //! Generic container macros already exist elsewhere, so those are not provided
 //! here at the moment.
 
+#[cfg(feature = "hashbrown")]
+extern crate hashbrown;
+
 #[macro_export]
 /// Create a **HashMap** from a list of key-value pairs
 ///
@@ -32,6 +37,8 @@
 ///
 /// ```
 /// #[macro_use] extern crate maplit;
+/// #[cfg(feature = "hashbrown")]
+/// extern crate hashbrown;
 /// # fn main() {
 ///
 /// let map = hashmap!{
@@ -51,6 +58,9 @@ macro_rules! hashmap {
     ($($key:expr => $value:expr),*) => {
         {
             let _cap = hashmap!(@count $($key),*);
+            #[cfg(feature = "hashbrown")]
+            let mut _map = ::hashbrown::HashMap::with_capacity(_cap);
+            #[cfg(not(feature = "hashbrown"))]
             let mut _map = ::std::collections::HashMap::with_capacity(_cap);
             $(
                 let _ = _map.insert($key, $value);
@@ -66,6 +76,8 @@ macro_rules! hashmap {
 ///
 /// ```
 /// #[macro_use] extern crate maplit;
+/// #[cfg(feature = "hashbrown")]
+/// extern crate hashbrown;
 /// # fn main() {
 ///
 /// let set = hashset!{"a", "b"};
@@ -83,6 +95,9 @@ macro_rules! hashset {
     ($($key:expr),*) => {
         {
             let _cap = hashset!(@count $($key),*);
+            #[cfg(feature = "hashbrown")]
+            let mut _set = ::hashbrown::HashSet::with_capacity(_cap);
+            #[cfg(not(feature = "hashbrown"))]
             let mut _set = ::std::collections::HashSet::with_capacity(_cap);
             $(
                 let _ = _set.insert($key);
@@ -99,6 +114,8 @@ macro_rules! hashset {
 ///
 /// ```
 /// #[macro_use] extern crate maplit;
+/// #[cfg(feature = "hashbrown")]
+/// extern crate hashbrown;
 /// # fn main() {
 ///
 /// let map = btreemap!{
@@ -132,6 +149,8 @@ macro_rules! btreemap {
 ///
 /// ```
 /// #[macro_use] extern crate maplit;
+/// #[cfg(feature = "hashbrown")]
+/// extern crate hashbrown;
 /// # fn main() {
 ///
 /// let set = btreeset!{"a", "b"};
@@ -177,8 +196,13 @@ pub fn __id<T>(t: T) -> T { t }
 ///
 /// ```
 /// #[macro_use] extern crate maplit;
+/// #[cfg(feature = "hashbrown")]
+/// extern crate hashbrown;
 /// # fn main() {
 ///
+/// #[cfg(feature = "hashbrown")]
+/// use hashbrown::HashMap;
+/// #[cfg(not(feature = "hashbrown"))]
 /// use std::collections::HashMap;
 /// use std::collections::BTreeSet;
 ///
@@ -252,7 +276,13 @@ macro_rules! convert_args {
 
 #[test]
 fn test_hashmap() {
+    #[cfg(feature = "hashbrown")]
+    use hashbrown::HashMap;
+    #[cfg(feature = "hashbrown")]
+    use hashbrown::HashSet;
+    #[cfg(not(feature = "hashbrown"))]
     use std::collections::HashMap;
+    #[cfg(not(feature = "hashbrown"))]
     use std::collections::HashSet;
     let names = hashmap!{
         1 => "one",

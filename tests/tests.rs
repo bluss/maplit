@@ -1,4 +1,7 @@
 
+#[cfg(feature = "hashbrown")]
+extern crate hashbrown;
+
 #[macro_use] extern crate maplit;
 
 #[test]

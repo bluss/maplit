@@ -12,5 +12,8 @@ description = "Collection “literal” macros for HashMap, HashSet, BTreeMap, a
 keywords = ["literal", "data-structure", "hashmap", "macro"]
 categories = ["rust-patterns"]
 
+[dependencies]
+hashbrown = { version = "0.1", optional = true }
+
 [package.metadata.release]
 no-dev-version = true
