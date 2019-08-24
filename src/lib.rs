@@ -25,7 +25,7 @@
 //! Generic container macros already exist elsewhere, so those are not provided
 //! here at the moment.
 
-#[macro_export]
+#[macro_export(local_inner_macros)]
 /// Create a **HashMap** from a list of key-value pairs
 ///
 /// ## Example
@@ -74,7 +74,7 @@ macro_rules! hashmap {
 /// assert!(!set.contains("c"));
 /// # }
 /// ```
-#[macro_export]
+#[macro_export(local_inner_macros)]
 macro_rules! hashset {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(hashset!(@single $rest)),*]));
@@ -92,7 +92,7 @@ macro_rules! hashset {
     };
 }
 
-#[macro_export]
+#[macro_export(local_inner_macros)]
 /// Create a **BTreeMap** from a list of key-value pairs
 ///
 /// ## Example
@@ -125,7 +125,7 @@ macro_rules! btreemap {
     };
 }
 
-#[macro_export]
+#[macro_export(local_inner_macros)]
 /// Create a **BTreeSet** from a list of elements.
 ///
 /// ## Example
@@ -172,6 +172,8 @@ pub fn __id<T>(t: T) -> T { t }
 ///
 /// [`Into`]: https://doc.rust-lang.org/std/convert/trait.Into.html
 ///
+/// **Note** To use `convert_args`, the macro that is being wrapped
+/// must itself be brought into the current scope with `#[macro_use]` or `use`.
 ///
 /// # Examples
 ///
@@ -214,7 +216,7 @@ pub fn __id<T>(t: T) -> T { t }
 ///
 /// # }
 /// ```
-#[macro_export]
+#[macro_export(local_inner_macros)]
 macro_rules! convert_args {
     (keys=$kf:expr, $macro_name:ident !($($k:expr),* $(,)*)) => {
         $macro_name! { $(($kf)($k)),* }
