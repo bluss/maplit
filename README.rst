@@ -21,6 +21,10 @@ __ https://docs.rs/maplit/
 Recent Changes
 --------------
 
+- 1.0.2
+
+  - Fix usage of the macros through full paths, like `maplit::hashmap!(..)` (#27)
+
 - 1.0.1
 
   - Fix ``unused_results`` lint in the macros by @povilasb
