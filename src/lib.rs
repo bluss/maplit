@@ -172,6 +172,8 @@ pub fn __id<T>(t: T) -> T { t }
 ///
 /// [`Into`]: https://doc.rust-lang.org/std/convert/trait.Into.html
 ///
+/// **Note** To use `convert_args`, the macro that is being wrapped
+/// must itself be brought into the current scope with `#[macro_use]` or `use`.
 ///
 /// # Examples
 ///
