@@ -2,6 +2,7 @@
 #[macro_use] extern crate maplit;
 
 #[test]
+#[allow(unused_parens)]
 fn test_parse() {
     let mut m = hashmap!{};
     m.insert(1, 1);
