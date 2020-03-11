@@ -60,6 +60,45 @@ macro_rules! hashmap {
     };
 }
 
+#[macro_export(local_inner_macros)]
+/// Create a **VecDeque** from a list of values
+///
+/// ## Example
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// # fn main() {
+///
+/// let deq = vecdeque!{
+///     1,
+///     2,
+///     3,
+/// };
+/// assert_eq!(deq.len(), 3);
+/// assert_eq!(deq.capacity(), 3);
+/// assert_eq!(deq.get(0), Some(&1));
+/// assert_eq!(deq.get(1), Some(&2));
+/// assert_eq!(deq.get(2), Some(&3));
+/// assert_eq!(deq.get(3), None);
+/// # }
+/// ```
+macro_rules! vecdeque {
+    (@single $($x:tt)*) => (());
+    (@count $($rest:expr),*) => (<[()]>::len(&[$(vecdeque!(@single $rest)),*]));
+
+    ($($value:expr,)+) => { vecdeque!($($value),+) };
+    ($($value:expr),*) => {
+        {
+            let _cap = vecdeque!(@count $($value),*);
+            let mut _map = ::std::collections::VecDeque::with_capacity(_cap);
+            $(
+                let _ = _map.push_back($value);
+            )*
+            _map
+        }
+    };
+}
+
 /// Create a **HashSet** from a list of elements.
 ///
 /// ## Example
