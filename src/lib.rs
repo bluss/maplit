@@ -82,6 +82,19 @@ macro_rules! hashmap {
 /// assert_eq!(deq.get(3), None);
 /// # }
 /// ```
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// # fn main() {
+///
+/// let deq = vecdeque![3; 5];
+/// assert_eq!(deq.len(), 5);
+/// assert_eq!(deq.capacity(), 5);
+/// assert_eq!(deq.get(0), Some(&3));
+/// assert_eq!(deq.get(4), Some(&3));
+/// assert_eq!(deq.get(5), None);
+/// # }
+/// ```
 macro_rules! vecdeque {
     (@single $($x:tt)*) => (());
     (@count $($rest:expr),*) => (<[()]>::len(&[$(vecdeque!(@single $rest)),*]));
@@ -92,8 +105,18 @@ macro_rules! vecdeque {
             let _cap = vecdeque!(@count $($value),*);
             let mut _map = ::std::collections::VecDeque::with_capacity(_cap);
             $(
-                let _ = _map.push_back($value);
+                _map.push_back($value);
             )*
+            _map
+        }
+    };
+    ($value:expr;$count:expr) => {
+        {
+            let c = $count;
+            let mut _map = ::std::collections::VecDeque::with_capacity(c);
+            for _ in 0..c {
+                _map.push_back($value);
+            }
             _map
         }
     };
