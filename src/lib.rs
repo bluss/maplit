@@ -154,6 +154,39 @@ macro_rules! btreeset {
     };
 }
 
+#[macro_export(local_inner_macros)]
+/// Create an array from a value and a list. Useful for non-copy types.
+///
+/// ## Example
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// # fn main() {
+///
+/// let a = array![Vec<i32> => vec![3, 5]; 3];
+/// assert_eq!(a.len(), 3);
+/// assert_eq!(a[0].len(), 2);
+/// assert_eq!(a[2].len(), 2);
+/// assert_eq!(a[1][0], 3);
+/// assert_eq!(a[1][1], 5);
+/// # }
+/// ```
+macro_rules! array {
+    ($t:ty => $value:expr;$count:expr) => {
+        {
+            let mut res: [::std::mem::MaybeUninit<$t>; $count] = unsafe {
+                ::std::mem::MaybeUninit::uninit().assume_init()
+            };
+
+            for i in 0..$count {
+                res[i] = ::std::mem::MaybeUninit::new($value);
+            }
+
+            unsafe { ::std::mem::transmute::<_, [$t; $count]>(res) }
+        }
+    };
+}
+
 /// Identity function. Used as the fallback for conversion.
 #[doc(hidden)]
 pub fn __id<T>(t: T) -> T { t }
