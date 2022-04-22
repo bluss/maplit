@@ -5,7 +5,7 @@
 //! Macros for container literals with specific type.
 //!
 //! ```
-//! #[macro_use] extern crate maplit;
+//! use maplit::hashmap;
 //!
 //! # fn main() {
 //! let map = hashmap!{
@@ -31,7 +31,7 @@
 /// ## Example
 ///
 /// ```
-/// #[macro_use] extern crate maplit;
+/// use maplit::hashmap;
 /// # fn main() {
 ///
 /// let map = hashmap!{
@@ -65,7 +65,7 @@ macro_rules! hashmap {
 /// ## Example
 ///
 /// ```
-/// #[macro_use] extern crate maplit;
+/// use maplit::hashset;
 /// # fn main() {
 ///
 /// let set = hashset!{"a", "b"};
@@ -98,7 +98,7 @@ macro_rules! hashset {
 /// ## Example
 ///
 /// ```
-/// #[macro_use] extern crate maplit;
+/// use maplit::btreemap;
 /// # fn main() {
 ///
 /// let map = btreemap!{
@@ -131,7 +131,7 @@ macro_rules! btreemap {
 /// ## Example
 ///
 /// ```
-/// #[macro_use] extern crate maplit;
+/// use maplit::btreeset;
 /// # fn main() {
 ///
 /// let set = btreeset!{"a", "b"};
@@ -178,7 +178,7 @@ pub fn __id<T>(t: T) -> T { t }
 /// # Examples
 ///
 /// ```
-/// #[macro_use] extern crate maplit;
+/// use maplit::{convert_args, btreeset, hashmap};
 /// # fn main() {
 ///
 /// use std::collections::HashMap;
