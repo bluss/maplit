@@ -60,6 +60,50 @@ macro_rules! hashmap {
     };
 }
 
+#[macro_export(local_inner_macros)]
+/// Create a **HashMap** with `specific type` from a list of key-value pairs
+///
+/// ## Example
+///
+/// ```
+/// #[macro_use] extern crate maplit;
+/// use std::collections::HashMap;
+/// struct Foo;
+/// struct Bar;
+///
+/// trait Zoo {}
+///
+/// impl Zoo for Foo {}
+/// impl Zoo for Bar {}
+///
+/// # fn main() {
+/// let map = hashmap_ex!(
+///     HashMap<_, Box<dyn Zoo>>,
+///     {
+///         "a" => Box::new(Foo {}),
+///         "b" => Box::new(Bar {}),
+///     }
+/// );
+/// # }
+/// ```
+macro_rules! hashmap_ex {
+    (@single $($x:tt)*) => (());
+    (@count $($rest:expr),*) => (<[()]>::len(&[$(hashmap_ex!(@single $rest)),*]));
+
+    ($t:ty, { $($key:expr => $value:expr,)+ } ) => { hashmap_ex!($t, { $($key => $value),+ }) };
+    ($t:ty, { $($key:expr => $value:expr),* } ) => {
+        {
+            let _cap = hashmap_ex!(@count $($key),*);
+            let mut _map: $t = ::std::collections::HashMap::with_capacity(_cap);
+            $(
+                let _ = _map.insert($key, $value);
+            )*
+            _map
+        }
+    };
+}
+
+
 /// Create a **HashSet** from a list of elements.
 ///
 /// ## Example
@@ -300,6 +344,60 @@ fn test_hashmap() {
         "one",
         "two"
     ));
+}
+
+#[test]
+fn test_hashmap_ex() {
+    use std::collections::HashMap;
+    let names: HashMap<i32, &str> = hashmap_ex!{
+        HashMap<i32, &str>,
+        {
+            1 => "one",
+            2 => "two",
+        }
+    };
+    assert_eq!(names.len(), 2);
+    assert_eq!(names[&1], "one");
+    assert_eq!(names[&2], "two");
+    assert_eq!(names.get(&3), None);
+
+    let empty: HashMap<i32, i32> = hashmap_ex!{
+        HashMap<i32, i32>, {}
+    };
+    assert_eq!(empty.len(), 0);
+
+    let _nested_compiles = hashmap_ex!{
+        HashMap<i32, _>,
+        {
+            1 => hashmap!{0 => 1 + 2,},
+            2 => hashmap!{1 => 1,},
+        }
+    };
+
+    struct Foo(i32);
+    struct Bar(i32);
+
+    trait Ret {
+        fn ret(&self) -> i32;
+    }
+
+    impl Ret for Foo {
+        fn ret(&self) -> i32 { self.0 }
+    }
+    impl Ret for Bar {
+        fn ret(&self) -> i32 { self.0 }
+    }
+
+    let func_map = hashmap_ex!(
+        HashMap<_, Box<dyn Ret>>,
+        {
+            "foo" => Box::new(Foo(1)),
+            "bar" => Box::new(Bar(2)),
+        }
+    );
+
+    assert_eq!(func_map["foo"].ret(), 1);
+    assert_eq!(func_map["bar"].ret(), 2);
 }
 
 #[test]
